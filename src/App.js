@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import WeatherCard from "./components/WeatherCard/component";
+import "./App.css";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const data = async () => {
+        const apiRes = await fetch(
+            "http://api.openweathermap.org/data/2.5/find?q=London&units=metric&appid=6132ed146516cb57fefdebf23a7a0001"
+        );
+        const resJSON = await apiRes.json();
+
+        return resJSON;
+    };
+
+    data().then((res) => console.log(res));
+
+    return (
+        <div className="App">
+            <WeatherCard
+                temp={22}
+                condition="Cloudy"
+                city="Sydney"
+                country="AU"
+            />
+            <WeatherCard
+                temp={6}
+                condition="Tornado"
+                city="Melbourne"
+                country="AU"
+            />
+            <WeatherCard
+                temp={-15}
+                condition="Snow"
+                city="London"
+                country="GB"
+            />
+        </div>
+    );
 }
 
 export default App;
