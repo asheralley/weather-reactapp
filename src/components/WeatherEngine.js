@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import WeatherCard from "./WeatherCard/component";
 
 function WeatherEngine({ location }) {
+  const appid = "secret";
   const [query, setQuery] = useState("");
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -17,7 +18,7 @@ function WeatherEngine({ location }) {
     setLoading(true);
     try {
       const apiRes = await fetch(
-        `http://api.openweathermap.org/data/2.5/weather?q=${q}&units=metric&appid=6132ed146516cb57fefdebf23a7a0001`
+        `http://api.openweathermap.org/data/2.5/weather?q=${q}&units=metric&appid=${appid}`
       );
 
       const resJSON = await apiRes.json();
