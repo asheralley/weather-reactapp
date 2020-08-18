@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { PulseLoader } from "react-spinners";
 import WeatherCard from "./WeatherCard/component";
 
 function WeatherEngine({ location }) {
@@ -34,43 +35,50 @@ function WeatherEngine({ location }) {
     setLoading(false);
   };
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    getWeather(query);
-  };
+  // const handleSearch = (e) => {
+  //   e.preventDefault();
+  //   getWeather(query);
+  // };
 
   useEffect(() => {
     getWeather(location);
   }, [location]);
 
+  if (error) {
+    return (
+      <div>
+        Something went wrong...
+        <button onClick={() => setError(false)}>Reset</button>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          width: "200px",
+          height: "240px",
+          color: "green",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <PulseLoader size={15} color="green" />
+      </div>
+    );
+  }
+
   return (
     <div>
-      {!loading && !error ? (
-        <div>
-          <WeatherCard
-            temp={weather.temp}
-            condition={weather.condition}
-            city={weather.city}
-            country={weather.country}
-          />
-          <form style={{ textAlign: "center" }} action="">
-            <input
-              required
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-            <button onClick={(e) => handleSearch(e)}>Submit</button>
-          </form>
-        </div>
-      ) : loading ? (
-        <div>Loading....</div>
-      ) : !loading && error ? (
-        <div>
-          Something went wrong...
-          <button onClick={() => setError(false)}>Reset</button>
-        </div>
-      ) : null}
+      <WeatherCard
+        temp={weather.temp}
+        condition={weather.condition}
+        city={weather.city}
+        country={weather.country}
+        getWeather={getWeather}
+      />
     </div>
   );
 }
